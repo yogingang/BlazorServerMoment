@@ -1,0 +1,24 @@
+﻿@page "/clock"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<h1>Current Time: @CurrentTime</h1>
+
+@code {
+    private string CurrentTime { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await UpdateTime();
+        }
+    }
+
+    private async Task UpdateTime()
+    {
+        CurrentTime = await JSRuntime.InvokeAsync<string>("getCurrentTime");
+        StateHasChanged();
+    }
+}
